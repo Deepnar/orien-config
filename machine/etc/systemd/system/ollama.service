@@ -1,0 +1,14 @@
+[Unit]
+Description=Ollama Service
+After=network-online.target
+
+[Service]
+ExecStart=/usr/local/bin/ollama serve
+User=ollama
+Group=ollama
+Restart=always
+RestartSec=3
+Environment="PATH=/home/deepnar/.local/bin:/home/deepnar/.sdkman/candidates/maven/current/bin:/home/deepnar/.sdkman/candidates/java/current/bin:/home/deepnar/.sdkman/candidates/gradle/current/bin:/run/user/1000/fnm_multishells/3851_1786899000267/bin:/opt/cuda/bin:/home/deepnar/.local/bin:/home/deepnar/.local/share/../bin:/home/deepnar/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/opt/cuda/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl"
+
+[Install]
+WantedBy=default.target
