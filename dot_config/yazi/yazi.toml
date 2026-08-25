@@ -1,0 +1,33 @@
+[opener]
+# Fixed: Bypasses browser shell locks by utilizing standard Wayland path handoffs
+pdf = [
+    { run = 'zen-browser %s', orphan = true, desc = "Open PDF", for = "linux" }
+]
+edit = [
+    { run = 'code %s', orphan = true, desc = "VSCode", for = "linux" }
+]
+view = [
+    { run = 'loupe %s', orphan = true, desc = "View Image", for = "linux" }
+]
+
+[open]
+prepend_rules = [
+    { mime = "application/pdf", use = "pdf" },
+    { mime = "text/*", use = "edit" },
+    { mime = "application/json", use = "edit" },
+
+    # Image rules (handles your .jpg request!)
+    { mime = "image/*", use = "view" },
+    { url = "*.jpg", use = "view" },
+    { url = "*.jpeg", use = "view" },
+    { url = "*.png", use = "view" },
+
+    # Language formats
+    { url = "*.py", use = "edit" },
+    { url = "*.cpp", use = "edit" },
+    { url = "*.rs", use = "edit" },
+    { url = "*.conf", use = "edit" },
+    { url = "*.ini", use = "edit" },
+    { url = "*.toml", use = "edit" }
+]
+

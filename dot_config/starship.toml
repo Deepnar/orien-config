@@ -1,0 +1,277 @@
+# --- THE P10K-STARSHIP HYBRID (FULLY LOADED) ---
+
+add_newline = true
+
+# =========================[ Line #1 Left ]=========================
+format = """
+[╭─ ](dimmed white)$os$directory$git_branch$git_status$git_metrics
+[╰─ ](dimmed white)$character"""
+
+# =========================[ Line #1 Right ]=========================
+right_format = """
+$status\
+$singularity\
+$kubernetes\
+$vcsh\
+$fossil_branch\
+$hg_branch\
+$pijul_channel\
+$docker_context\
+$c\
+$cmake\
+$cobol\
+$daml\
+$dart\
+$deno\
+$dotnet\
+$elixir\
+$elm\
+$erlang\
+$fennel\
+$golang\
+$guix_shell\
+$haskell\
+$haxe\
+$helm\
+$java\
+$julia\
+$kotlin\
+$gradle\
+$lua\
+$nim\
+$nodejs\
+$ocaml\
+$opa\
+$perl\
+$php\
+$pulumi\
+$purescript\
+$python\
+$raku\
+$rlang\
+$red\
+$ruby\
+$rust\
+$scala\
+$solidity\
+$swift\
+$terraform\
+$vlang\
+$vagrant\
+$zig\
+$buf\
+$conda\
+$meson\
+$spack\
+$aws\
+$gcloud\
+$openstack\
+$azure\
+$crystal\
+$package\
+$memory_usage\
+$cmd_duration\
+$time\
+"""
+
+[fill]
+symbol = ' '
+
+# --- CORE PROMPT ELEMENTS ---
+
+[os]
+disabled = false
+style = "bold bright-white"
+format = "[$symbol ]($style)"
+
+[os.symbols]
+Arch = ""
+CachyOS = ""
+Linux = ""
+
+[directory]
+style = "bold bright-blue"
+format = "[$path ]($style)"
+truncation_length = 3
+truncation_symbol = "…/"
+read_only = " "
+
+[character]
+success_symbol = "[❯](bold bright-green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❮](bold bright-yellow)"
+
+[status]
+disabled = false
+format = "[✘ $status ](bold red)"
+
+[time]
+disabled = false
+format = "[ $time ](dimmed white)"
+time_format = "%H:%M"
+
+[cmd_duration]
+min_time = 3000
+format = "[took $duration ](italic dimmed white)"
+
+# --- GIT INTEGRATION ---
+
+[git_branch]
+format = "[$symbol$branch(:$remote_branch) ]($style)"
+symbol = " "
+style = "bold purple"
+truncation_symbol = "⋯"
+truncation_length = 15
+only_attached = true
+
+[git_status]
+style = "bold bright-blue"
+format = "([⎪$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed⎥]($style) )"
+conflicted = "[◪ ](italic bright-magenta)"
+ahead = "[⇡${count} ](italic green)"
+behind = "[⇣${count} ](italic red)"
+diverged = "[⇡${ahead_count}⇣${behind_count} ](italic bright-magenta)"
+untracked = "[?${count} ](italic bright-yellow)"
+stashed = "[*${count} ](italic white)"
+modified = "[!${count} ](italic yellow)"
+staged = "[+${count} ](italic bright-cyan)"
+renamed = "[»${count} ](italic bright-blue)"
+deleted = "[✘${count} ](italic red)"
+
+[git_metrics]
+format = '([+$added ]($added_style))([-$deleted ]($deleted_style))'
+added_style = 'italic dimmed green'
+deleted_style = 'italic dimmed red'
+disabled = false
+
+# --- CLOUD & ENVIRONMENTS ---
+
+[aws]
+symbol = " "
+format = "[$symbol($profile) ](bold bright-yellow)"
+
+[azure]
+symbol = "󰠅 "
+format = "[$symbol($subscription) ](bold bright-blue)"
+
+[gcloud]
+symbol = "󱇶 "
+format = "[$symbol($account) ](bold bright-blue)"
+
+[conda]
+symbol = " "
+format = "[$symbol$environment ](bold bright-green)"
+
+[docker_context]
+symbol = " "
+format = "[$symbol$context ](bold bright-blue)"
+
+[kubernetes]
+symbol = "󱃾 "
+format = "[$symbol$context ](bold bright-cyan)"
+
+[terraform]
+symbol = "󱁢 "
+format = "[$symbol$workspace ](bold bright-purple)"
+
+# --- ALL PROGRAMMING LANGUAGES ---
+
+[c]
+symbol = " "
+format = "[$symbol($version) ](bold bright-blue)"
+
+[cmake]
+symbol = " "
+format = "[$symbol($version) ](bold bright-blue)"
+
+[dart]
+symbol = " "
+format = "[$symbol($version) ](bold bright-blue)"
+
+[deno]
+symbol = "🦕 "
+format = "[$symbol($version) ](bold bright-green)"
+
+[dotnet]
+symbol = " "
+format = "[$symbol($version) ](bold bright-purple)"
+
+[elixir]
+symbol = " "
+format = "[$symbol($version) ](bold bright-purple)"
+
+[elm]
+symbol = " "
+format = "[$symbol($version) ](bold bright-cyan)"
+
+[golang]
+symbol = " "
+format = "[$symbol($version) ](bold bright-cyan)"
+
+[haskell]
+symbol = " "
+format = "[$symbol($version) ](bold bright-purple)"
+
+[java]
+symbol = " "
+format = "[$symbol($version) ](bold bright-red)"
+
+[julia]
+symbol = " "
+format = "[$symbol($version) ](bold bright-purple)"
+
+[kotlin]
+symbol = " "
+format = "[$symbol($version) ](bold bright-purple)"
+
+[lua]
+symbol = " "
+format = "[$symbol($version) ](bold bright-yellow)"
+
+[nim]
+symbol = "󰆥 "
+format = "[$symbol($version) ](bold bright-yellow)"
+
+[nodejs]
+symbol = " "
+format = "[$symbol($version) ](bold bright-green)"
+
+[perl]
+symbol = " "
+format = "[$symbol($version) ](bold bright-blue)"
+
+[php]
+symbol = " "
+format = "[$symbol($version) ](bold bright-blue)"
+
+[python]
+symbol = " "
+format = "[$symbol${pyenv_prefix}(${version} )(\\($virtualenv\\) )](bold bright-yellow)"
+
+[ruby]
+symbol = " "
+format = "[$symbol($version) ](bold red)"
+
+[rust]
+symbol = " "
+format = "[$symbol($version) ](bold red)"
+
+[scala]
+symbol = " "
+format = "[$symbol($version) ](bold bright-red)"
+
+[swift]
+symbol = " "
+format = "[$symbol($version) ](bold bright-orange)"
+
+[zig]
+symbol = " "
+format = "[$symbol($version) ](bold bright-yellow)"
+
+[package]
+symbol = "󰏗 "
+format = "[$symbol$version ](dimmed bright-white)"
+
+[memory_usage]
+symbol = "󰍛 "
+format = "[$symbol${ram} ](bold bright-white)"

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+target_dir="$HOME/Pictures/Screenshots"
+mkdir -p "$target_dir"
+
+# Caelestia's image cliphist watcher interferes with image clipboard ownership.
+image_watchers=$(pgrep -f 'wl-paste --type image --watch cliphist store' || true)
+if [[ -n "$image_watchers" ]]; then
+    kill $image_watchers
+fi
+
+file="$target_dir/$(date +'%Y-%m-%d_%H-%M-%S')_monitor.png"
+monitor="$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .name')"
+
+grim -o "$monitor" "$file"
+
+# Proven working clipboard-owner pattern.
+nohup wl-copy --foreground --type image/png < "$file" >/dev/null 2>&1 &
+
+notify-send \
+    -a "Screenshot" \
+    "Screenshot" \
+    "Current monitor saved and copied to clipboard"
+
+echo "OK: $file"

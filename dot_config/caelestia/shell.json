@@ -1,0 +1,209 @@
+{
+    "appearance": {
+        "anim": {
+            "durations": {
+                "scale": 0.5
+            }
+        },
+        "padding": {
+            "scale": 0.8
+        },
+        "rounding": {
+            "scale": 0.8
+        },
+        "spacing": {
+            "scale": 0.5
+        },
+        "transparency": {
+            "base": 1,
+            "enabled": false,
+            "layers": 1
+        }
+    },
+    "background": {
+        "desktopClock": {
+            "background": {
+                "blur": true,
+                "enabled": false,
+                "opacity": 0
+            },
+            "enabled": true,
+            "invertColors": false,
+            "position": "top-right",
+            "shadow": {
+                "blur": 0.28692127025202524,
+                "enabled": false,
+                "opacity": 0.4730183955895589
+            }
+        },
+        "enabled": true,
+        "visualiser": {
+            "enabled": false
+        },
+        "wallpaperEnabled": true
+    },
+    "bar": {
+        "activeWindow": {
+            "compact": true,
+            "inverted": true
+        },
+        "clock": {
+            "background": true,
+            "showDate": true,
+            "showIcon": false
+        },
+        "excludedScreens": [
+            "HDMI-A-1"
+        ],
+        "persistent": false,
+        "popouts": {
+            "activeWindow": false,
+            "statusIcons": true,
+            "tray": true
+        },
+        "scrollActions": {
+            "volume": true
+        },
+        "showOnHover": true,
+        "statusIcons": [
+            {
+                "enabled": false,
+                "id": "lockStatus"
+            },
+            {
+                "enabled": true,
+                "id": "audio"
+            },
+            {
+                "enabled": false,
+                "id": "microphone"
+            },
+            {
+                "enabled": false,
+                "id": "kbLayout"
+            },
+            {
+                "enabled": true,
+                "id": "network"
+            },
+            {
+                "enabled": true,
+                "id": "bluetooth"
+            },
+            {
+                "enabled": true,
+                "id": "battery"
+            }
+        ],
+        "tray": {
+            "background": false,
+            "compact": false,
+            "recolour": false
+        },
+        "workspaces": {
+            "activeIndicator": true,
+            "occupiedBg": false,
+            "perMonitorWorkspaces": true,
+            "showWindows": false,
+            "shown": 3
+        }
+    },
+    "border": {
+        "rounding": 10,
+        "thickness": 5
+    },
+    "dashboard": {
+        "dragThreshold": 50,
+        "enabled": true,
+        "showOnHover": true
+    },
+    "general": {
+        "apps": {
+            "explorer": [
+                "thunar"
+            ],
+            "terminal": [
+                "/usr/bin/ghostty",
+                "--gtk-single-instance=true"
+            ]
+        }
+    },
+    "launcher": {
+        "favouriteApps": [
+        ],
+        "hiddenApps": [
+            "com.zamaudio.zamverb",
+            "com.zamaudio.zamulticompx2",
+            "com.zamaudio.zamulticomp",
+            "com.zamaudio.zamtube",
+            "com.zamaudio.zamphono",
+            "com.zamaudio.zamheadx2",
+            "com.zamaudio.zamgrains",
+            "com.zamaudio.zamgeq31",
+            "com.zamaudio.zamgate",
+            "com.zamaudio.zamgatex2",
+            "com.zamaudio.zameq2",
+            "com.zamaudio.zamdynamiceq",
+            "com.zamaudio.zamdelay",
+            "com.zamaudio.zamcompx2",
+            "com.zamaudio.zamcomp",
+            "com.zamaudio.zamaximx2",
+            "com.zamaudio.zamautosat",
+            "vim",
+            "uuctl",
+            "com.shellyorg.shelly",
+            "org.cachyos.scx-manager",
+            "org.rncbc.qtractor",
+            "qvidcap",
+            "qv4l2",
+            "jshell-java-openjdk",
+            "jconsole-java-openjdk",
+            "micro",
+            "net.lutris.Lutris",
+            "lsp-plugins",
+            "limine-snapper-restore",
+            "hp-uiscan",
+            "lstopo",
+            "foot-server",
+            "footclient",
+            "io.github.benjamimgois.goverlay",
+            "cmake-gui",
+            "avahi-discover",
+            "bvnc",
+            "bssh",
+            "Alacritty",
+            "kitty",
+            "foot",
+            "btrfs-assistant",
+            "cups",
+            "org.gnome.Meld",
+            "org.kde.dolphin",
+            "thunar-settings",
+            "libreoffice-startcenter",
+            "libreoffice-base",
+            "libreoffice-calc",
+            "libreoffice-draw",
+            "libreoffice-math"
+        ],
+        "showOnHover": false
+    },
+    "notifs": {
+        "openExpanded": false
+    },
+    "services": {
+        "brightnessIncrement": 0.05,
+        "maxVolume": 1,
+        "useTwelveHourClock": false
+    },
+    "sidebar": {
+        "enabled": true
+    },
+    "utilities": {
+        "toasts": {
+            "capsLockChanged": false,
+            "fullscreen": "all",
+            "kbLayoutChanged": false,
+            "nowPlaying": false
+        }
+    }
+}

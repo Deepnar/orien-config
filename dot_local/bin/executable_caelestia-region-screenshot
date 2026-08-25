@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+target_dir="$HOME/Pictures/Screenshots"
+mkdir -p "$target_dir"
+
+image_watchers=$(pgrep -f 'wl-paste --type image --watch cliphist store' || true)
+if [[ -n "$image_watchers" ]]; then
+    kill $image_watchers
+fi
+
+file="$target_dir/$(date +'%Y-%m-%d_%H-%M-%S')_region.png"
+geometry="$(slurp)"
+
+grim -g "$geometry" "$file"
+
+nohup wl-copy --foreground --type image/png < "$file" >/dev/null 2>&1 &
+
+notify-send \
+    -a "Screenshot" \
+    "Screenshot" \
+    "Region saved and copied to clipboard"
+
+echo "OK: $file"
