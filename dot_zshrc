@@ -1,4 +1,4 @@
-# --- 1. CORE ZSH (History & Autocomplete Engine) ---
+# --- 1. CORE ZSH (History & Completion) ---
 HISTFILE=~/.zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
@@ -8,38 +8,36 @@ setopt SHARE_HISTORY
 autoload -Uz compinit
 compinit
 
-# --- 2. SYSTEM INFO & COLORS ---
-# Load Caelestia custom colors FIRST
-\cat ~/.local/state/caelestia/sequences.txt 2> /dev/null
-
-# Clear the screen (this deletes any invisible blank lines the sequences file just dumped)
+# --- 2. SYSTEM INFO & PROMPT ---
+# Caelestia's current shell color sequence (optional outside Caelestia).
+\cat "$HOME/.local/state/caelestia/sequences.txt" 2>/dev/null
 clear
-
-# Print the system info perfectly at the top
 fastfetch
-# Initialize Starship (The Minimal Prompt)
-eval "$(starship init zsh)"
-# --- 4. TOOLS & INTEGRATIONS ---
-# Zoxide (smarter cd)
-eval "$(zoxide init zsh)"
 
-# fzf integration
+eval "$(starship init zsh)"
+
+# --- 3. TOOLS & INTEGRATIONS ---
+eval "$(zoxide init zsh)"
 source /usr/share/fzf/key-bindings.zsh 2>/dev/null
 source /usr/share/fzf/completion.zsh 2>/dev/null
 
-# --- 5. ALIASES & FUNCTIONS ---
+# --- 4. ALIASES & FUNCTIONS ---
 alias ls='eza --icons --git'
 alias ll='eza -la --icons --git'
 alias cat='bat'
 alias grep='rg'
 alias lf='yazi'
 alias c='clear'
-alias i='cd /home/deepnar/Programs/ice && source .venv/bin/activate && clear'
+
+# Project-specific shortcuts. These intentionally stay here as personal workflow
+# helpers rather than pretending they are portable system configuration.
+alias i='cd "$HOME/Programs/ice" && source .venv/bin/activate && clear'
 alias z='zellij'
 alias dup='cd docker && docker compose up -d && cd ..'
 alias ddown='cd docker && docker compose down && cd ..'
 alias crun='uv run celery -A src.workers.celery_app worker -B --loglevel=info'
 alias srun='uv run uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --reload'
+
 vllm-bg() {
     vllm serve Qwen/Qwen2.5-3B-Instruct-AWQ \
         --port 8002 \
@@ -57,7 +55,8 @@ vllm-label() {
         --gpu-memory-utilization 0.95 \
         --enforce-eager
 }
-# Coder server (WITH fp8 – safe for free‑form text)
+
+# Coder server (WITH fp8 – safe for free-form text)
 vllm-coder() {
     vllm serve Qwen/Qwen2.5-Coder-14B-Instruct-AWQ \
         --port 8001 \
@@ -66,6 +65,7 @@ vllm-coder() {
         --kv-cache-dtype fp8 \
         --enforce-eager
 }
+
 vllm-status() {
     echo "=== vLLM Health ==="
     echo "  Status: $(curl -s -o /dev/null -w '%{http_code}' http://localhost:8001/health)"
@@ -90,24 +90,26 @@ code() {
   command code "$@" > /dev/null 2>&1 &
 }
 
-# --- 6. ZSH PLUGINS ---
+# --- 5. ZSH PLUGINS ---
 source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh 2>/dev/null
 
-# --- 7. ENVIRONMENT VARIABLES ---
-. "$HOME/.local/share/../bin/env"
+# --- 6. ENVIRONMENT ---
+# These files are optional so a fresh machine can start without every tool
+# already installed.
+[[ -f "$HOME/.local/share/../bin/env" ]] && . "$HOME/.local/share/../bin/env"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="/opt/cuda/bin:$PATH"
-export LD_LIBRARY_PATH="/opt/cuda/lib64:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/opt/cuda/lib64${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 
 eval "$(fnm env --use-on-cd)"
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# Qwen Code PATH block begin
-export PATH='/home/deepnar/.local/bin':$PATH
-# Qwen Code PATH block end
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$SDKMAN_DIR/bin/sdkman-init.sh" ]] && source "$SDKMAN_DIR/bin/sdkman-init.sh"
+
+# Qwen Code
+export PATH="$HOME/.local/bin:$PATH"
 
 # opencode
-export PATH=/home/deepnar/.opencode/bin:$PATH
+export PATH="$HOME/.opencode/bin:$PATH"
