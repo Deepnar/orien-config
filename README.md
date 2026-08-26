@@ -1,145 +1,168 @@
 # orien-config
 
-> Personal Linux configuration, machine notes, and recovery snapshot.
+> Personal Linux configuration, machine snapshots, and migration notes.
 
-A private configuration repository for my CachyOS-based Hyprland setup.
+Private repository for my CachyOS + Hyprland setup, managed with **chezmoi**.
 
-This repo is intentionally split between **portable user configuration** and
-**machine-specific configuration** so that personal preferences can travel
-between installs without pretending that hardware-specific quirks are portable.
+The important design choice here is that this is **not** a blind copy of `$HOME` or `/etc`. The repository records what is worth preserving, while keeping runtime state, credentials, and hardware-specific assumptions separated from the portable parts.
 
 ---
 
-## ✦ What this contains
+## Repository layout
 
 ```text
 orien-config/
-├── dot_config/               # User-level application & desktop configuration
-├── dot_local/                # Personal scripts and executables
-├── dot_gitconfig             # Git identity and defaults
-├── dot_zshrc                 # Zsh configuration
-├── dot_zshenv                # Zsh environment
-├── machine/                  # Hardware / system-specific configuration
-└── packages/                 # Current package inventory
-User configuration
+├── dot_config/             # chezmoi-managed user configuration
+├── dot_local/              # personal scripts
+├── dot_gitconfig           # Git configuration
+├── dot_zshrc               # Zsh configuration
+├── dot_zshenv              # Zsh environment
+├── packages/               # package inventory + notes
+├── machine/                # machine-specific system snapshots
+└── README.md
+```
 
-The dot_config/ tree contains the parts of the desktop that are meant to
-follow me across installations:
+### `dot_*` — user configuration
 
-Hyprland / Caelestia personal overrides
-Ghostty
-Zsh ecosystem
-Neovim
-Yazi
-Starship
-Fastfetch
-Cava
-Keyd user mappings
-Swappy
-Spotify / Spicetify configuration
-Personal screenshot utilities
-Machine configuration
+This is the configuration that is useful to preserve as part of my personal environment:
 
-machine/ contains configuration tied to this particular laptop rather than
-generic dotfiles:
+- Zsh and Git
+- Ghostty, Starship, Fastfetch, Cava, Yazi
+- Neovim
+- Swappy
+- Keyd user mappings
+- Spotify / Spicetify configuration
+- Caelestia / Hyprland personal overrides
+- personal screenshot scripts
 
-Lenovo Legion power / profile configuration
-Legion audio kernel quirk
-Keyd global device mapping
-Kernel module loading
-systemd services and timers
-machine-specific logind behavior
-Ollama system service configuration
+**Important:** not every file under `dot_config/` is universally portable. In particular, the Caelestia / Hyprland overrides contain current machine and desktop-stack assumptions such as monitor names, NVIDIA environment settings, and the current Caelestia integration. Those should be adapted rather than blindly copied when moving to another desktop setup (for example, Omarchy).
 
-These files are preserved as a machine snapshot. They are not assumed to
-be appropriate for another computer.
+### `machine/` — hardware/system snapshot
 
-Package inventory
+`machine/` preserves system-level configuration for this Lenovo Legion machine, including:
 
-packages/ records what is explicitly installed on the current system:
+- Legion power/profile configuration
+- Legion audio kernel/module quirks
+- global Keyd device configuration
+- kernel module loading
+- systemd services and timers
+- logind configuration
+- Ollama service configuration
 
-pacman-explicit.txt — explicitly installed packages
-aur.txt — foreign / AUR packages
+These files are **reference snapshots**, not a generic cross-machine install layer.
 
-This is an inventory, not yet an automated bootstrap script.
+See [`machine/README.md`](machine/README.md) before applying anything from this directory.
 
-◇ Design principles
-Portable ≠ universal
+### `packages/` — what is installed
 
-A setting belongs here because it is part of my environment, not because it
-is universally useful.
+```text
+packages/
+├── pacman-explicit.txt   # explicitly installed packages
+├── aur.txt               # foreign / AUR packages
+└── README.md             # package and migration notes
+```
 
-Hardware-specific configuration stays under machine/.
+These are inventories, not yet an automated bootstrap script.
 
-State is captured before automation
+---
 
-This repository first captures a known-good system.
+## What is intentionally not here
 
-Automation and full rebuild scripts can be added later when there is an
-actual need to rebuild or migrate the machine.
+The repository deliberately avoids copying application/runtime state wholesale.
 
-Don't copy application state blindly
+Examples:
 
-Large application profiles, credentials, browser sessions, caches, and other
-runtime state are deliberately kept out of the repository.
+- `~/.config/zen/` — browser migration is a separate task
+- `~/.config/spotify/prefs` — account/session state
+- caches, histories, databases, cookies, and similar runtime data
+- `~/Programs/` — personal coding projects
+- old migration/back-up directories
+- unused personal systemd units
+- unreliable/unused configuration such as the old Zellij setup
 
-For example, the Zen browser profile is not currently migrated wholesale.
-That is a separate, intentional task.
+The rule is simple: **preserve configuration, not accidental state.**
 
-Keep the working system boring
+---
 
-The goal is not to continuously redesign the desktop.
+## Current migration philosophy
 
-The goal is to have a clean, recoverable snapshot that can be trusted when a
-reinstall or migration eventually happens.
+This repository exists first as a **known-good recovery snapshot**.
 
-◎ Current state
+It is intentionally *not* a one-command rebuild system yet.
 
-This repository currently represents a known-good working system snapshot.
+When the machine eventually moves to another OS or desktop stack, the process should be:
 
-Captured:
+```text
+fresh OS / desktop
+        ↓
+install required packages
+        ↓
+restore the genuinely portable user config
+        ↓
+adapt desktop-specific config
+        ↓
+apply machine-specific hardware fixes
+        ↓
+migrate application-specific state selectively
+        ↓
+verify
+```
 
-portable dotfiles
-machine-specific configuration
-package inventories
-Git history
-private GitHub backup
+That separation is intentional. It prevents a migration from recreating every workaround that accumulated on the previous installation.
+
+---
+
+## Current status
+
+Captured and backed up:
+
+- portable user configuration
+- current Caelestia / Hyprland personal configuration
+- Legion machine-level snapshots
+- pacman and AUR package inventories
+- Git history
+- private GitHub remote
 
 Intentionally deferred:
 
-full bootstrap / reinstall automation
-Zen browser migration
-further cosmetic experimentation
+- full bootstrap / reinstall automation
+- Zen migration
+- further desktop cosmetic experimentation
 
-Those can be added when they become useful rather than maintained for their
-own sake.
+Those can be added when there is an actual migration to perform.
 
-◌ Tooling
+---
 
-The user configuration is managed with
-chezmoi.
+## Tooling
 
-The repository itself is a normal Git repository and is hosted privately on
-GitHub.
+The user configuration is managed with [chezmoi](https://www.chezmoi.io/).
 
-Current remote:
+The repository itself is a normal Git repository hosted privately on GitHub.
 
+Remote:
+
+```text
 Deepnar/orien-config
-Git history
+```
 
-The repository is built in layers rather than as one giant initial dump:
+---
 
+## Git history
+
+The repository is built in layers so the history explains what was captured and why:
+
+```text
 Initial chezmoi snapshot
         ↓
 Add machine-specific configuration
         ↓
-future migration / automation work
+README / documentation improvements
+        ↓
+future migration or automation work
+```
 
-This makes it easier to understand what changed and, more importantly, why.
+---
 
-License
+## License
 
-This repository is personal configuration.
-
-Use or adapt anything here at your own risk; some files are specific to my
-hardware and environment.
+Personal configuration. Use or adapt at your own risk; some files are specific to my hardware and current desktop stack.
