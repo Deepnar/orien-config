@@ -5,27 +5,54 @@ command = /usr/bin/zsh
 font-family = "JetBrainsMono Nerd Font"
 font-size = 12
 background-opacity = 0.8
+background-opacity-cells = true
 background-blur-radius = 0
 
-# Invisible 25px cushion so text doesn't hit the screen edges
-window-padding-x = 25
-window-padding-y = 25
+window-padding-x = 10
+window-padding-y = 10
 window-decoration = false
 theme = catppuccin-mocha
 
-# --- NATIVE GHOSTTY PANE SPLITS ---
+# background = #0e0e0e
+window-padding-color = background
+# ─────────────────────────────────────────────
+# NATIVE GHOSTTY PANE SPLITS
+# ─────────────────────────────────────────────
 
-# 1. Create Splits
+# Create splits
 keybind = ctrl+shift+r=new_split:right
 keybind = ctrl+shift+d=new_split:down
 
-# 2. Navigate Panes (Using your Vim Home-Row Motions!)
+# Navigate Ghostty panes
 keybind = alt+h=goto_split:left
 keybind = alt+l=goto_split:right
 keybind = alt+k=goto_split:up
 keybind = alt+j=goto_split:down
 
-# 3. Control Panes
+# Control Ghostty panes
 keybind = ctrl+shift+z=toggle_split_zoom
 keybind = ctrl+shift+w=close_surface
 
+confirm-close-surface = false
+
+
+# ─────────────────────────────────────────────
+# TMUX WINDOW KEYS
+#
+# Send unique sequences that tmux maps to User0...
+# ─────────────────────────────────────────────
+
+# Ctrl+1 ... Ctrl+9
+keybind = ctrl+1=csi:101~
+keybind = ctrl+2=csi:102~
+keybind = ctrl+3=csi:103~
+keybind = ctrl+4=csi:104~
+keybind = ctrl+5=csi:105~
+keybind = ctrl+6=csi:106~
+keybind = ctrl+7=csi:107~
+keybind = ctrl+8=csi:108~
+keybind = ctrl+9=csi:109~
+
+# Ctrl+Tab / Ctrl+Shift+Tab
+keybind = ctrl+tab=csi:110~
+keybind = ctrl+shift+tab=csi:111~
