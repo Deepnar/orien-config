@@ -1,6 +1,8 @@
 <div align="center">
 
-# 🪐 orien-config
+<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/logos/exports/1544x1544_circle.png" width="140" alt="Catppuccin logo" />
+
+# orien-config
 
 ### A version-controlled CachyOS + Hyprland workstation
 
