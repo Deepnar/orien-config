@@ -1,168 +1,219 @@
-# orien-config
+<div align="center">
 
-> Personal Linux configuration, machine snapshots, and migration notes.
+# 🪐 orien-config
 
-Private repository for my CachyOS + Hyprland setup, managed with **chezmoi**.
+### A version-controlled CachyOS + Hyprland workstation
 
-The important design choice here is that this is **not** a blind copy of `$HOME` or `/etc`. The repository records what is worth preserving, while keeping runtime state, credentials, and hardware-specific assumptions separated from the portable parts.
+**chezmoi · Hyprland · Caelestia · Zsh · Neovim · Ghostty · tmux · Yazi · systemd · Ollama**
+
+*Preserve configuration, not accidental state.*
+
+</div>
 
 ---
 
-## Repository layout
+## What is this?
+
+This repository is the configuration layer for my Linux workstation: user dotfiles, developer tooling, package inventories, and carefully separated machine-specific configuration.
+
+It is managed with **[chezmoi](https://www.chezmoi.io/)**, but it is deliberately **not** a blind backup of `$HOME` or `/etc`. The goal is to keep the parts of the system that are worth reproducing while excluding credentials, sessions, caches, databases, browser state, and other accidental runtime data.
+
+> [!IMPORTANT]
+> The `machine/` directory contains reference snapshots for my Lenovo Legion system. It is documentation and recovery material, **not a generic install layer**. Review files before applying them to another machine.
+
+## ✦ What's inside
+
+| Area | What it demonstrates |
+| --- | --- |
+| **Desktop** | Hyprland + Caelestia overrides and workstation behavior |
+| **Shell** | Zsh, Starship and terminal workflow |
+| **Terminal / CLI** | Ghostty, tmux, Yazi, Fastfetch and Cava |
+| **Editor** | Neovim configuration |
+| **Workflow** | screenshot tooling, Swappy and personal scripts |
+| **Input** | Keyd mappings |
+| **Packages** | explicit pacman + AUR inventories |
+| **System** | systemd, logind, module loading and hardware-specific configuration |
+| **Legion** | power/profile and Linux hardware configuration |
+| **Local AI** | Ollama service configuration |
+
+## Repository map
 
 ```text
 orien-config/
 ├── dot_config/             # chezmoi-managed user configuration
-├── dot_local/              # personal scripts
+├── dot_local/              # personal scripts / user tooling
 ├── dot_gitconfig           # Git configuration
-├── dot_zshrc               # Zsh configuration
+├── dot_tmux.conf           # tmux configuration
+├── dot_zshrc               # interactive Zsh configuration
 ├── dot_zshenv              # Zsh environment
-├── packages/               # package inventory + notes
+├── packages/               # package inventories + migration notes
 ├── machine/                # machine-specific system snapshots
+│   ├── etc/
+│   │   ├── keyd/
+│   │   ├── legion_linux/
+│   │   ├── modprobe.d/
+│   │   ├── modules-load.d/
+│   │   └── systemd/
+│   └── README.md
 └── README.md
 ```
 
-### `dot_*` — user configuration
+### `dot_*` — the workstation layer
 
-This is the configuration that is useful to preserve as part of my personal environment:
+The chezmoi source contains the user configuration that defines the everyday environment:
 
-- Zsh and Git
-- Ghostty, Starship, Fastfetch, Cava, Yazi
-- Neovim
-- Swappy
-- Keyd user mappings
-- Spotify / Spicetify configuration
-- Caelestia / Hyprland personal overrides
-- personal screenshot scripts
+- **Zsh / Git / tmux**
+- **Ghostty / Starship / Fastfetch / Cava / Yazi**
+- **Neovim**
+- **Swappy and screenshot tooling**
+- **Keyd user mappings**
+- **Spotify / Spicetify configuration**
+- **Caelestia / Hyprland personal overrides**
 
-**Important:** not every file under `dot_config/` is universally portable. In particular, the Caelestia / Hyprland overrides contain current machine and desktop-stack assumptions such as monitor names, NVIDIA environment settings, and the current Caelestia integration. Those should be adapted rather than blindly copied when moving to another desktop setup (for example, Omarchy).
+Not everything here is universally portable. Desktop overrides can encode assumptions about the current monitor layout, NVIDIA environment and Caelestia/Hyprland stack. Those are configuration worth preserving, but they should be **adapted**, not blindly replayed on a different system.
 
-### `machine/` — hardware/system snapshot
+### `machine/` — the hardware boundary
 
-`machine/` preserves system-level configuration for this Lenovo Legion machine, including:
+System-level configuration is intentionally kept away from portable user dotfiles.
 
-- Legion power/profile configuration
-- Legion audio kernel/module quirks
-- global Keyd device configuration
+The snapshot includes configuration for:
+
+- Legion power/profile behavior
+- Legion audio/kernel quirks
+- global Keyd configuration
 - kernel module loading
 - systemd services and timers
-- logind configuration
-- Ollama service configuration
+- logind
+- Ollama as a local service
 
-These files are **reference snapshots**, not a generic cross-machine install layer.
+See **[`machine/README.md`](machine/README.md)** before using anything from this directory.
 
-See [`machine/README.md`](machine/README.md) before applying anything from this directory.
-
-### `packages/` — what is installed
+### `packages/` — environment inventory
 
 ```text
 packages/
-├── pacman-explicit.txt   # explicitly installed packages
-├── aur.txt               # foreign / AUR packages
-└── README.md             # package and migration notes
+├── pacman-explicit.txt     # explicitly installed packages
+├── aur.txt                 # foreign / AUR packages
+└── README.md               # package + migration notes
 ```
 
-These are inventories, not yet an automated bootstrap script.
+These files describe the environment; they are intentionally not pretending to be a finished one-command installer.
 
 ---
 
-## What is intentionally not here
+## Design principles
 
-The repository deliberately avoids copying application/runtime state wholesale.
+### 01 — Configuration ≠ state
 
-Examples:
+Things that describe how the workstation should behave belong here. Things created merely because the workstation has been used generally do not.
 
-- `~/.config/zen/` — browser migration is a separate task
-- `~/.config/spotify/prefs` — account/session state
-- caches, histories, databases, cookies, and similar runtime data
-- `~/Programs/` — personal coding projects
-- old migration/back-up directories
-- unused personal systemd units
-- unreliable/unused configuration such as the old Zellij setup
+### 02 — Portable ≠ machine-specific
 
-The rule is simple: **preserve configuration, not accidental state.**
+A shell alias and a hardware power profile have very different portability. They live behind an explicit boundary rather than being restored as one undifferentiated blob.
+
+### 03 — Recovery before automation
+
+A transparent, inspectable known-good snapshot is more useful to me than premature bootstrap automation. Automation can be built when a real migration provides the requirements.
+
+### 04 — Git should explain the machine
+
+The history is intended to show *why* configuration was captured and changed, not merely preserve the latest state.
 
 ---
 
-## Current migration philosophy
+## What is intentionally excluded?
 
-This repository exists first as a **known-good recovery snapshot**.
+This repository should **not** contain credentials or account/session state.
 
-It is intentionally *not* a one-command rebuild system yet.
+Examples deliberately kept outside the source:
 
-When the machine eventually moves to another OS or desktop stack, the process should be:
+- SSH/GPG private keys and API tokens
+- browser profiles and cookies
+- Spotify account/session state
+- caches, histories and application databases
+- `~/Programs/` and unrelated coding projects
+- migration backups
+- obsolete/unused configuration
+
+The governing rule remains:
+
+> **preserve configuration, not accidental state.**
+
+---
+
+## Migration model
 
 ```text
 fresh OS / desktop
-        ↓
+        │
+        ▼
 install required packages
-        ↓
-restore the genuinely portable user config
-        ↓
-adapt desktop-specific config
-        ↓
-apply machine-specific hardware fixes
-        ↓
-migrate application-specific state selectively
-        ↓
+        │
+        ▼
+restore portable user configuration
+        │
+        ▼
+adapt desktop-specific configuration
+        │
+        ▼
+apply machine-specific hardware configuration
+        │
+        ▼
+selectively migrate application state
+        │
+        ▼
 verify
 ```
 
-That separation is intentional. It prevents a migration from recreating every workaround that accumulated on the previous installation.
+The separation is intentional: a migration should not blindly recreate every workaround that accumulated on the previous installation.
+
+## Using the source
+
+If chezmoi is already configured, the source directory can be located without remembering its path:
+
+```bash
+chezmoi source-path
+```
+
+or entered directly with:
+
+```bash
+chezmoi cd
+```
+
+On my current setup the source follows chezmoi's standard source-directory layout under `~/.local/share/chezmoi`.
+
+> [!CAUTION]
+> This is a personal workstation configuration, not a drop-in distro configuration. Inspect and adapt files before applying them—especially anything under `machine/`.
 
 ---
 
-## Current status
+## Status
 
-Captured and backed up:
+**Captured**
 
-- portable user configuration
-- current Caelestia / Hyprland personal configuration
+- user configuration
+- Caelestia / Hyprland personal configuration
 - Legion machine-level snapshots
 - pacman and AUR package inventories
 - Git history
-- private GitHub remote
 
-Intentionally deferred:
+**Deliberately not solved yet**
 
-- full bootstrap / reinstall automation
-- Zen migration
-- further desktop cosmetic experimentation
+- universal bootstrap/reinstall automation
+- cross-machine portability for hardware-specific configuration
+- wholesale application-state migration
 
-Those can be added when there is an actual migration to perform.
-
----
-
-## Tooling
-
-The user configuration is managed with [chezmoi](https://www.chezmoi.io/).
-
-The repository itself is a normal Git repository hosted privately on GitHub.
-
-Remote:
-
-```text
-Deepnar/orien-config
-```
+That incompleteness is intentional: this repository records what is known to be worth preserving without claiming portability that has not been tested.
 
 ---
 
-## Git history
+## Security
 
-The repository is built in layers so the history explains what was captured and why:
+Credentials, private keys, browser/session state and application databases are not intended to be tracked.
 
-```text
-Initial chezmoi snapshot
-        ↓
-Add machine-specific configuration
-        ↓
-README / documentation improvements
-        ↓
-future migration or automation work
-```
+If sensitive material is ever discovered in the repository, please report it privately rather than opening a public issue.
 
----
+## License / reuse
 
-## License
-
-Personal configuration. Use or adapt at your own risk; some files are specific to my hardware and current desktop stack.
+This is personal configuration and some files are specific to my hardware and desktop stack. Feel free to study or adapt ideas, but **review everything before applying it to another system**.
